@@ -5,6 +5,8 @@ public class CameraController : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
     public float rotationSpeed = 90.0f;
+    public float forwardSpeed = 3.0f;
+    public float turnSpeed = 0.01f;
 
     private float targetRotation;
 
@@ -22,6 +24,9 @@ public class CameraController : MonoBehaviour
             Vector3 newPosition = transform.position + new Vector3(horizontalInput, 0, 0) * moveSpeed * Time.deltaTime;
             transform.position = newPosition;
         }
+
+        // Move the camera forward along its own Y-axis
+        transform.position += transform.up * forwardSpeed * Time.deltaTime;
     }
 
     IEnumerator RotateCamera()
@@ -30,7 +35,7 @@ public class CameraController : MonoBehaviour
         float currentRotation = transform.rotation.eulerAngles.z;
         targetRotation = (currentRotation + rotationSpeed) % 360;
 
-        while (elapsedTime < 1f)
+        while (elapsedTime < turnSpeed)
         {
             float zRotation = Mathf.Lerp(currentRotation, targetRotation, elapsedTime);
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, zRotation));
