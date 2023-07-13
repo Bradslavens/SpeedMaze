@@ -6,9 +6,6 @@ public class CameraController : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float rotationSpeed = 90.0f;
     public float forwardSpeed = 3.0f;
-    public float turnSpeed = 0.01f;
-
-    private float targetRotation;
 
     void Update()
     {
@@ -16,7 +13,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(RotateCamera());
+            RotateCamera();
         }
 
         if (Mathf.Abs(horizontalInput) > 0.1f)
@@ -29,22 +26,12 @@ public class CameraController : MonoBehaviour
         transform.position += transform.up * forwardSpeed * Time.deltaTime;
     }
 
-    IEnumerator RotateCamera()
+    void RotateCamera()
     {
-        float elapsedTime = 0f;
         float currentRotation = transform.rotation.eulerAngles.z;
-        targetRotation = (currentRotation + rotationSpeed) % 360;
+        float targetRotation = (currentRotation + rotationSpeed) % 360;
 
-        while (elapsedTime < turnSpeed)
-        {
-            float zRotation = Mathf.Lerp(currentRotation, targetRotation, elapsedTime);
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, zRotation));
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Snap to the target rotation after the loop.
+        // Snap to the target rotation instantly.
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, targetRotation));
     }
 }
