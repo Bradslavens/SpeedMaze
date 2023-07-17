@@ -16,4 +16,14 @@ public class PlayerBackWallCheck : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("collission");
+
+        if (collision.collider.CompareTag("BreadCrumb"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
 }
